@@ -28,7 +28,7 @@ services:
     ports:
       - "${WGER_PORT}:8000"
     volumes:
-      - ./wger:/app
+      - ./wger-master:/app
     restart: always
     networks:
       - docker_network
