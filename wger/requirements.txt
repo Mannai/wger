@@ -1,5 +1,6 @@
 Django>=4.2,<4.3
 psycopg2>=2.9
+celery==5.2.7
 gunicorn
 Pillow
 django-compressor
