@@ -1,0 +1,16 @@
+Django>=4.2,<4.3
+psycopg2>=2.9
+gunicorn
+Pillow
+django-compressor
+whitenoise
+django-axes
+django-recurrence
+django-extensions
+django-model-utils
+django-bootstrap4
+markdown
+python-dateutil
+six
+djangorestframework
+requests
