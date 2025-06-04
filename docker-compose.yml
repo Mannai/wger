@@ -1,0 +1,37 @@
+version: "3.9"
+
+networks:
+  docker_network:
+    external: true
+
+services:
+  db:
+    image: postgres:15
+    container_name: wger-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - wger_pgdata:/var/lib/postgresql/data
+    networks:
+      - docker_network
+
+  wger:
+    build: .
+    container_name: wger-app
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+    ports:
+      - "${WGER_PORT}:8000"
+    volumes:
+      - ./wger:/app
+    restart: always
+    networks:
+      - docker_network
+
+volumes:
+  wger_pgdata:
