@@ -3,7 +3,7 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install required system packages and Node.js
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     curl gnupg build-essential git yarn libpq-dev gcc \
     libjpeg-dev zlib1g-dev \
@@ -14,22 +14,24 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy the wger repo into the container
+# Copy code
 COPY ./wger /app
 
-# Install Python dependencies
-RUN pip install --upgrade pip \
- && pip install -r requirements.txt
+# Show files (for debugging)
+RUN ls -la /app
 
-# Install JS dependencies and compile SCSS
+# Install Python packages
+RUN pip install --upgrade pip && pip install -r /app/requirements.txt
+
+# Install JS and build CSS
 RUN yarn install \
  && yarn run sass wger/core/static/scss/main.scss:wger/core/static/yarn/bootstrap-compiled.css
 
-# Collect static files for Django
+# Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Expose the app port (even though internally it's still 8000)
+# Expose internal port
 EXPOSE 8000
 
-# Run the Django development server
+# Start app
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
