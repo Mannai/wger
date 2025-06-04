@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 networks:
   docker_network:
@@ -28,7 +28,7 @@ services:
     ports:
       - "${WGER_PORT}:8000"
     volumes:
-      - ./wger-master:/app
+      - .:/app
     restart: always
     networks:
       - docker_network
